@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acelerômetro</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: black;
+            transition: background-color 0.5s;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        if (window.DeviceOrientationEvent) {
+            DeviceOrientationEvent.requestPermission()
+                .then(permissionState => {
+                    if (permissionState === 'granted') {
+                        window.addEventListener("deviceorientation", function (event) {
+                            var beta = event.beta; // Inclinação frontal/traseira
+                            var gamma = event.gamma; // Inclinação esquerda/direita
+
+                            var backgroundColor = map(beta, 0, 90, 0, 255);
+
+                            document.body.style.backgroundColor = `rgb(${backgroundColor}, ${backgroundColor}, ${backgroundColor})`;
+                        });
+                    } else {
+                        alert('Permissão para o acelerômetro não foi concedida. A aplicação não funcionará.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro ao solicitar permissão:', error);
+                });
+        } else {
+            alert('Seu dispositivo não suporta a API do acelerômetro.');
+        }
+    </script>
+</body>
+</html>
